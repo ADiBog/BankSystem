@@ -1,6 +1,5 @@
 package com.example.banksystem.service.dto;
 
-import com.example.banksystem.service.dto.PersonDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

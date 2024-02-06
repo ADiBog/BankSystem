@@ -1,6 +1,5 @@
 package com.example.banksystem.dao.Entity;
 
-import com.example.banksystem.dao.Entity.PersonEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
