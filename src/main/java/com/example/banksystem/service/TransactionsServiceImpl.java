@@ -3,6 +3,7 @@ package com.example.banksystem.service;
 import com.example.banksystem.dao.Entity.TransactionsEntity;
 import com.example.banksystem.dao.TransactionsRepository;
 import com.example.banksystem.exception.BankSystemNotFoundException;
+import com.example.banksystem.service.api.AccountService;
 import com.example.banksystem.service.api.TransactionsService;
 import com.example.banksystem.service.dto.TransactionsDto;
 import com.example.banksystem.utils.ModelMapperUtils;
@@ -22,6 +23,7 @@ import java.util.Objects;
 public class TransactionsServiceImpl implements TransactionsService {
 
     private final TransactionsRepository transactionsRepository;
+   // private final AccountService accountService;
 
     @Override
     public TransactionsDto save(TransactionsDto dto) {
@@ -29,6 +31,8 @@ public class TransactionsServiceImpl implements TransactionsService {
 
         TransactionsEntity transactionsEntity = ModelMapperUtils.map(dto, TransactionsEntity.class);
         transactionsRepository.save(ModelMapperUtils.map(dto, TransactionsEntity.class));
+
+        //accountService.updateBalance(dto.getAccountId(), dto.getPrice());
         return ModelMapperUtils.map(transactionsEntity, TransactionsDto.class);
     }
 

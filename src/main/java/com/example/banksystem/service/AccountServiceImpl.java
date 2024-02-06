@@ -12,12 +12,12 @@ import com.example.banksystem.service.dto.*;
 import com.example.banksystem.utils.ModelMapperUtils;
 import com.example.banksystem.utils.api.DigestService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -29,13 +29,14 @@ import java.util.Random;
 public class AccountServiceImpl implements AccountService {
 
     private final DigestService digestService;
-    private final PersonService personService;
     private final TransactionsService transactionsService;
     private final AccountRepository accountRepository;
 
-    @Override
-    public List<DisplayAllAccountsDto> findAll() {
-        return ModelMapperUtils.mapAll(accountRepository.findAll(), DisplayAllAccountsDto.class);
+    private PersonService personService;
+
+    @Autowired
+    public void setPersonService(PersonService personService) {
+        this.personService = personService;
     }
 
     @Override
@@ -47,15 +48,15 @@ public class AccountServiceImpl implements AccountService {
 
         AccountEntity accountEntity = buildAccountEntity(personDto, dto.getPinCode());
         accountRepository.save(accountEntity);
-        return accountEntity.getAccountNo().toString();
+        return accountEntity.getAccountNumber().toString();
     }
 
     @Override
     @Transactional
     public String withdrawalMoney(WithdrawalDto dto) {
 
-        Long accountNo = dto.getAccountNo();
-        AccountDto selectedAccount = findByAccountNo(accountNo);
+        Long accountNumber = dto.getAccountNumber();
+        AccountDto selectedAccount = findByAccountNumber(accountNumber);
 
         String pinCodeFromDb = selectedAccount.getPinCode();
         checkEqualsPinCodes(pinCodeFromDb, dto.getPinCode());
@@ -64,8 +65,8 @@ public class AccountServiceImpl implements AccountService {
         BigDecimal withdrawalAmount = dto.getPrice();
         checkAvailableBalanceForWithdrawal(balanceOnAccount, withdrawalAmount);
 
-        AccountDto accountAfterWithdrawal = getAccountDto(accountNo, balanceOnAccount.subtract(withdrawalAmount));
-        updateBalance(accountAfterWithdrawal);
+        AccountDto accountAfterWithdrawal = getAccountDto(selectedAccount.getAccountId(), accountNumber, balanceOnAccount.subtract(withdrawalAmount));
+        updateBalance(accountAfterWithdrawal.getAccountId(), accountAfterWithdrawal.getBalance());
 
         TransactionsDto transactionDto = getTransactionDto(selectedAccount.getAccountId(), withdrawalAmount.multiply(new BigDecimal("-1")));
         transactionsService.save(transactionDto);
@@ -76,16 +77,17 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public String depositMoney(DepositDto dto) {
-        Long accountNo = dto.getAccountNo();
-        AccountDto selectedAccount = findByAccountNo(accountNo);
+        Long accountNumber = dto.getAccountNumber();
+        AccountDto selectedAccount = findByAccountNumber(accountNumber);
 
         BigDecimal balanceOnAccount = selectedAccount.getBalance();
-        BigDecimal withdrawalAmount = dto.getPrice();
+        BigDecimal replenishmentAmount = dto.getReplenishmentAmount();
 
-        AccountDto accountAfterDeposit = getAccountDto(accountNo, balanceOnAccount.add(withdrawalAmount));
-        updateBalance(accountAfterDeposit);
+        balanceOnAccount = balanceOnAccount.add(replenishmentAmount);
+        AccountDto accountAfterDeposit = getAccountDto(selectedAccount.getAccountId(), accountNumber, balanceOnAccount);
+        updateBalance(accountAfterDeposit.getAccountId(), accountAfterDeposit.getBalance());
 
-        TransactionsDto transactionDto = getTransactionDto(selectedAccount.getAccountId(), withdrawalAmount);
+        TransactionsDto transactionDto = getTransactionDto(selectedAccount.getAccountId(), replenishmentAmount);
         transactionsService.save(transactionDto);
 
         return accountAfterDeposit.getBalance().toString();
@@ -104,23 +106,23 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDto findByAccountNo(Long accountNo) {
-        return accountRepository.findByAccountNo(accountNo)
+    public AccountDto findByAccountNumber(Long accountNumber) {
+        return accountRepository.findByAccountNumber(accountNumber)
                 .map(entity -> ModelMapperUtils.map(entity, AccountDto.class))
                 .orElseThrow(() ->
-                        new BankSystemNotFoundException(String.format("Счет с номером %s не найден", accountNo)));
+                        new BankSystemNotFoundException(String.format("Счет с номером %s не найден", accountNumber)));
     }
 
     @Override
-    public void updateBalance(AccountDto dto) {
-        accountRepository.updateBalance(ModelMapperUtils.map(dto, AccountEntity.class));
+    public void updateBalance(Long accountId, BigDecimal balance) {
+        accountRepository.updateBalance(accountId, balance);
     }
 
     private AccountEntity buildAccountEntity(PersonDto personDto, String pinCode) {
         PersonEntity map = ModelMapperUtils.map(personService.findById(personDto.getPersonId()), PersonEntity.class);
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setPerson(map);
-        accountEntity.setAccountNo(getAccountNumber());
+        accountEntity.setAccountNumber(getAccountNumber());
         accountEntity.setPinCode(getHashPinCode(pinCode));
         accountEntity.setBalance(new BigDecimal("0.00"));
 
@@ -151,9 +153,10 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    private AccountDto getAccountDto(Long accountNo, BigDecimal balance) {
+    private AccountDto getAccountDto(Long accountId, Long accountNumber, BigDecimal balance) {
         AccountDto account = new AccountDto();
-        account.setAccountNo(accountNo);
+        account.setAccountId(accountId);
+        account.setAccountNumber(accountNumber);
         account.setBalance(balance);
         return account;
     }
@@ -167,14 +170,15 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private WithdrawalDto getWithdrawMoneyDto(MoneyTransferDto dto) {
-        WithdrawalDto withdrawMoneyDto = ModelMapperUtils.map(dto, WithdrawalDto.class);
-        withdrawMoneyDto.setAccountNo(dto.getAccountNoFrom());
-        return withdrawMoneyDto;
+        WithdrawalDto withdrawalMoneyDto = ModelMapperUtils.map(dto, WithdrawalDto.class);
+        withdrawalMoneyDto.setAccountNumber(dto.getOutgoingAccountNumber());
+        return withdrawalMoneyDto;
     }
 
     private DepositDto getDepositMoneyDto(MoneyTransferDto dto) {
         DepositDto depositMoneyDto = ModelMapperUtils.map(dto, DepositDto.class);
-        depositMoneyDto.setAccountNo(dto.getAccountNoTo());
+        depositMoneyDto.setAccountNumber(dto.getIncomingAccountNumber());
+        depositMoneyDto.setReplenishmentAmount(dto.getPrice());
         return depositMoneyDto;
     }
 }

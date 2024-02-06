@@ -31,5 +31,6 @@ public interface PersonService {
      */
     PersonDto findById(Long personId);
 
+    PersonDto addAccToList(Long personId, Long accountNumber);
 
 }

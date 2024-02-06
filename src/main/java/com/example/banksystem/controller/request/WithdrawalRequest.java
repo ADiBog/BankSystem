@@ -37,7 +37,7 @@ public class WithdrawalRequest {
      */
     @NonNull
     @Schema(description = "Номер счета.")
-    private Long accountNo;
+    private Long accountNumber;
 
     /**
      * Сумма снятия со счета.

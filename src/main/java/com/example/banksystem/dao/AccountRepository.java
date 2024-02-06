@@ -2,8 +2,13 @@ package com.example.banksystem.dao;
 
 import com.example.banksystem.dao.Entity.AccountEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 /**
@@ -14,31 +19,18 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
 
     /**
      * @param accountId
-     * @return
      */
     Optional<AccountEntity> findById(Long accountId);
 
     /**
-     * @param accountNo
-     * @return
+     * @param accountNumber
      */
-    Optional<AccountEntity> findByAccountNo(Long accountNo);
-
-    /**
-     * Получить все счета пользователей.
-     *
-     * @return список счетов пользоваетлей.
-     */
-    //List<ModelForDisplayingAllAccountsEntity> findAll();
-
-
-    /**
-     * @param entity
-     */
-    //void save(AccountEntity entity);
+    Optional<AccountEntity> findByAccountNumber(Long accountNumber);
 
     /**
      * Обновить баланс по номеру счета.
      */
-    void updateBalance(AccountEntity entity);
+    @Modifying
+    @Query("update AccountEntity a set a.balance = :balance where a.accountId = :accountId")
+    void updateBalance(@Param("accountId") Long accountId, @Param("balance") BigDecimal balance);
 }

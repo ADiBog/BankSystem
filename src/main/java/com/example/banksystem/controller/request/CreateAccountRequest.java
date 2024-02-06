@@ -30,6 +30,6 @@ public class CreateAccountRequest {
      */
     @NotBlank
     @Schema(description = "Пин код счета")
-    @Pattern(regexp = "^\\d{4}$\n")
+    @Pattern(regexp = "^(\\d{4})$")
     private String pinCode;
 }

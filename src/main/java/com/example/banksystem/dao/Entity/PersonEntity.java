@@ -1,14 +1,18 @@
 package com.example.banksystem.dao.Entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Талица person.
  */
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString(exclude = "accountEntityList")
 @Entity
 @Table(name = "person")
 public class PersonEntity {
@@ -24,11 +28,15 @@ public class PersonEntity {
     /**
      * Логин аккаунта
      */
-    private String personLogin;
+    private String login;
 
     /**
      * Список аккаунтов
      */
     @OneToMany(mappedBy = "person")
-    private List<AccountEntity> accountEntityList;
+    private List<AccountEntity> accountEntityList = new ArrayList<>();
+
+    public void addAccToList (AccountEntity accountEntity) {
+        accountEntityList.add(accountEntity);
+    }
 }

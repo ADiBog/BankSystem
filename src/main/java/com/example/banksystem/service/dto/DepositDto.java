@@ -15,12 +15,12 @@ public class DepositDto {
      * Номер счета.
      */
     @NonNull
-    private Long accountNo;
+    private Long accountNumber;
 
     /**
      * Сумма пополнения.
      */
     @NonNull
     @Min(value = 0)
-    private BigDecimal price;
+    private BigDecimal replenishmentAmount;
 }

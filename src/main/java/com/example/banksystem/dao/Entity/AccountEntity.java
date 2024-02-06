@@ -1,15 +1,21 @@
 package com.example.banksystem.dao.Entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 /**
  * Таблица account.
  */
-@Data
+
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 @Table(name = "account")
 public class AccountEntity {
 
@@ -24,12 +30,7 @@ public class AccountEntity {
     /**
      * Номер счета
      */
-    private Long accountNo;
-
-    /**
-     * Id аккаунта
-     */
-    //private Long personId;
+    private Long accountNumber;
 
     /**
      * Пин код счета в виде хэша
@@ -48,8 +49,4 @@ public class AccountEntity {
     @JoinColumn(name = "person_id")
     private PersonEntity person;
 
-    /**
-     * Обновление баланса
-     */
-    private BigDecimal updateBalance;
 }

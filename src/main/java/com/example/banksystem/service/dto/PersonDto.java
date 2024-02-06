@@ -1,9 +1,12 @@
 package com.example.banksystem.service.dto;
 
+import com.example.banksystem.dao.Entity.AccountEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor

@@ -2,19 +2,12 @@ package com.example.banksystem.service.api;
 
 import com.example.banksystem.service.dto.*;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 /**
  * Работа со счетами.
  */
 public interface AccountService {
-
-    /**
-     * Получить счета всех пользователей.
-     *
-     * @return список счетов всех пользователей.
-     */
-    List<DisplayAllAccountsDto> findAll();
 
     /**
      * Создать новый счет.
@@ -51,15 +44,17 @@ public interface AccountService {
     /**
      * Найти счет по его номеру.
      *
-     * @param accountNo Номер счета.
+     * @param accountNumber Номер счета.
      * @return Данные о счете.
      */
-    AccountDto findByAccountNo(Long accountNo);
+    AccountDto findByAccountNumber(Long accountNumber);
 
     /**
      * Обновить баланс счета по его номеру.
      *
      * @param dto номер счета и баланс для обновления в БД.
      */
-    void updateBalance(AccountDto dto);
+    //void updateBalance(AccountDto dto);
+
+    void updateBalance(Long accountId, BigDecimal balance);
 }

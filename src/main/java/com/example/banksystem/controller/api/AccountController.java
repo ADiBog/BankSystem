@@ -4,7 +4,6 @@ import com.example.banksystem.controller.request.CreateAccountRequest;
 import com.example.banksystem.controller.request.DepositRequest;
 import com.example.banksystem.controller.request.MoneyTransferRequest;
 import com.example.banksystem.controller.request.WithdrawalRequest;
-import com.example.banksystem.service.dto.DisplayAllAccountsDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +18,6 @@ public interface AccountController {
 
     @Operation(summary = "Создать счет")
     ResponseEntity<String> create(CreateAccountRequest request);
-
-    @Operation(summary = "Получить все счета")
-    List<DisplayAllAccountsDto> getAll();
 
     @Operation(summary = "Снять со счета")
     ResponseEntity<String> withdrawalMoney(WithdrawalRequest request);

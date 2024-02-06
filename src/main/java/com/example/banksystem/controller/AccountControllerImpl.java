@@ -10,6 +10,8 @@ import com.example.banksystem.service.dto.*;
 import com.example.banksystem.utils.ModelMapperUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,19 +25,18 @@ import java.util.List;
 @RequestMapping("account")
 public class AccountControllerImpl implements AccountController {
 
-    private final AccountService accountService;
+    private AccountService accountService;
+
+    @Autowired
+    public AccountControllerImpl(@Lazy AccountService accountService) {
+        this.accountService = accountService;
+    }
 
     @Override
     @PostMapping("create")
     public ResponseEntity<String> create(@RequestBody @Valid CreateAccountRequest request) {
         String accountNumber = accountService.save(ModelMapperUtils.map(request, AccountDto.class));
         return ResponseEntity.ok("Счет создан. Номер счета " + accountNumber);
-    }
-
-    @Override
-    @GetMapping("get-all")
-    public List<DisplayAllAccountsDto> getAll() {
-        return accountService.findAll();
     }
 
     @Override

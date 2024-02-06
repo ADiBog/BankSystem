@@ -18,7 +18,7 @@ public class AccountDto {
     /**
      * Номер счета.
      */
-    private Long accountNo;
+    private Long accountNumber;
 
     /**
      * Баланс счета.

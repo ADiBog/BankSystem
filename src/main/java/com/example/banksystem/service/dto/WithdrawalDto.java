@@ -25,7 +25,7 @@ public class WithdrawalDto {
     /**
      * Номер счета.
      */
-    private Long accountNo;
+    private Long accountNumber;
 
     /**
      * Сумма снятия со счета.

@@ -29,13 +29,13 @@ public class MoneyTransferDto {
      * Номер счета с которого выполняется перевод.
      */
     @NonNull
-    private Long accountNoFrom;
+    private Long outgoingAccountNumber;
 
     /**
      * Номер счета для пополнения баланса.
      */
     @NonNull
-    private Long accountNoTo;
+    private Long incomingAccountNumber;
 
     /**
      * Сумма перевода.

@@ -2,10 +2,13 @@ package com.example.banksystem.controller;
 
 import com.example.banksystem.controller.api.PersonController;
 import com.example.banksystem.controller.request.PersonRequest;
+import com.example.banksystem.service.api.AccountService;
 import com.example.banksystem.service.api.PersonService;
 import com.example.banksystem.service.dto.PersonDto;
 import com.example.banksystem.utils.ModelMapperUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,7 +19,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PersonControllerImpl implements PersonController {
 
-    private final PersonService personService;
+    private PersonService personService;
+
+    @Autowired
+    public PersonControllerImpl(@Lazy PersonService personService) {
+        this.personService = personService;
+    }
 
     @Override
     @PostMapping("create")
