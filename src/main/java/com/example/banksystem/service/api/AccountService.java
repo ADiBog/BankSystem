@@ -56,7 +56,7 @@ public interface AccountService {
      * Обновить баланс счета по его номеру.
      *
      * @param accountId id аккаунта.
-     * @param accountId id аккаунта.
+     * @param accountId баланс аккаунта.
      */
     void updateBalance(Long accountId, BigDecimal balance);
 }
