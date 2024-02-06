@@ -1,6 +1,9 @@
 package com.example.banksystem.service.api;
 
-import com.example.banksystem.service.dto.*;
+import com.example.banksystem.service.dto.AccountDto;
+import com.example.banksystem.service.dto.DepositDto;
+import com.example.banksystem.service.dto.MoneyTransferDto;
+import com.example.banksystem.service.dto.WithdrawalDto;
 
 import java.math.BigDecimal;
 
@@ -52,9 +55,8 @@ public interface AccountService {
     /**
      * Обновить баланс счета по его номеру.
      *
-     * @param dto номер счета и баланс для обновления в БД.
+     * @param accountId id аккаунта.
+     * @param accountId id аккаунта.
      */
-    //void updateBalance(AccountDto dto);
-
     void updateBalance(Long accountId, BigDecimal balance);
 }
