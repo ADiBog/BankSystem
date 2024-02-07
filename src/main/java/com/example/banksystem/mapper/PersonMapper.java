@@ -2,7 +2,7 @@ package com.example.banksystem.mapper;
 
 import com.example.banksystem.controller.request.PersonRequest;
 import com.example.banksystem.dao.Entity.PersonEntity;
-import com.example.banksystem.service.dto.PersonDto;
+import com.example.banksystem.dto.PersonDto;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

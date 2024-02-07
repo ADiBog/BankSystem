@@ -1,8 +1,8 @@
 package com.example.banksystem.controller;
 
+import com.example.banksystem.api.TransactionsService;
 import com.example.banksystem.controller.api.TransactionsController;
-import com.example.banksystem.service.api.TransactionsService;
-import com.example.banksystem.service.dto.TransactionsDto;
+import com.example.banksystem.dto.TransactionsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.GetMapping;

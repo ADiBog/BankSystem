@@ -1,7 +1,7 @@
 package com.example.banksystem.controller.api;
 
 import com.example.banksystem.controller.request.PersonRequest;
-import com.example.banksystem.service.dto.PersonDto;
+import com.example.banksystem.dto.PersonDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 

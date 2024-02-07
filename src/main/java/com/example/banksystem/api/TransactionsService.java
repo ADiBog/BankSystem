@@ -1,6 +1,6 @@
-package com.example.banksystem.service.api;
+package com.example.banksystem.api;
 
-import com.example.banksystem.service.dto.TransactionsDto;
+import com.example.banksystem.dto.TransactionsDto;
 
 import java.util.List;
 

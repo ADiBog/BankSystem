@@ -1,7 +1,7 @@
 package com.example.banksystem.mapper;
 
 import com.example.banksystem.dao.Entity.TransactionsEntity;
-import com.example.banksystem.service.dto.TransactionsDto;
+import com.example.banksystem.dto.TransactionsDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -1,6 +1,6 @@
 package com.example.banksystem.controller.api;
 
-import com.example.banksystem.service.dto.TransactionsDto;
+import com.example.banksystem.dto.TransactionsDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 

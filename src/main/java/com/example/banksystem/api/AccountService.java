@@ -1,9 +1,9 @@
-package com.example.banksystem.service.api;
+package com.example.banksystem.api;
 
-import com.example.banksystem.service.dto.AccountDto;
-import com.example.banksystem.service.dto.DepositDto;
-import com.example.banksystem.service.dto.MoneyTransferDto;
-import com.example.banksystem.service.dto.WithdrawalDto;
+import com.example.banksystem.dto.AccountDto;
+import com.example.banksystem.dto.DepositDto;
+import com.example.banksystem.dto.MoneyTransferDto;
+import com.example.banksystem.dto.WithdrawalDto;
 
 import java.math.BigDecimal;
 

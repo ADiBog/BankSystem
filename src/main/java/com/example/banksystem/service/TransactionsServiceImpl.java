@@ -1,11 +1,11 @@
 package com.example.banksystem.service;
 
+import com.example.banksystem.api.TransactionsService;
 import com.example.banksystem.dao.Entity.TransactionsEntity;
 import com.example.banksystem.dao.TransactionsRepository;
+import com.example.banksystem.dto.TransactionsDto;
 import com.example.banksystem.exception.BankSystemNotFoundException;
 import com.example.banksystem.mapper.TransactionsMapper;
-import com.example.banksystem.service.api.TransactionsService;
-import com.example.banksystem.service.dto.TransactionsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

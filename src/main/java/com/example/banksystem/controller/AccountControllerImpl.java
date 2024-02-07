@@ -1,5 +1,6 @@
 package com.example.banksystem.controller;
 
+import com.example.banksystem.api.AccountService;
 import com.example.banksystem.controller.api.AccountController;
 import com.example.banksystem.controller.request.CreateAccountRequest;
 import com.example.banksystem.controller.request.DepositRequest;
@@ -9,7 +10,6 @@ import com.example.banksystem.mapper.AccountMapper;
 import com.example.banksystem.mapper.DepositMapper;
 import com.example.banksystem.mapper.MoneyTransferMapper;
 import com.example.banksystem.mapper.WithdrawalMapper;
-import com.example.banksystem.service.api.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

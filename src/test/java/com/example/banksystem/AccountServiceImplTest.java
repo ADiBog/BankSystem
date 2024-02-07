@@ -1,19 +1,19 @@
 package com.example.banksystem;
 
+import com.example.banksystem.api.PersonService;
+import com.example.banksystem.api.TransactionsService;
 import com.example.banksystem.dao.AccountRepository;
 import com.example.banksystem.dao.Entity.AccountEntity;
+import com.example.banksystem.dto.AccountDto;
+import com.example.banksystem.dto.DepositDto;
+import com.example.banksystem.dto.PersonDto;
+import com.example.banksystem.dto.WithdrawalDto;
 import com.example.banksystem.exception.BankSystemNotFoundException;
 import com.example.banksystem.mapper.AccountMapper;
 import com.example.banksystem.mapper.DepositMapper;
 import com.example.banksystem.mapper.PersonMapper;
 import com.example.banksystem.mapper.WithdrawalMapper;
 import com.example.banksystem.service.AccountServiceImpl;
-import com.example.banksystem.service.api.PersonService;
-import com.example.banksystem.service.api.TransactionsService;
-import com.example.banksystem.service.dto.AccountDto;
-import com.example.banksystem.service.dto.DepositDto;
-import com.example.banksystem.service.dto.PersonDto;
-import com.example.banksystem.service.dto.WithdrawalDto;
 import com.example.banksystem.utils.api.DigestService;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,18 +1,18 @@
 package com.example.banksystem.service;
 
+import com.example.banksystem.api.AccountService;
+import com.example.banksystem.api.PersonService;
+import com.example.banksystem.api.TransactionsService;
 import com.example.banksystem.dao.AccountRepository;
 import com.example.banksystem.dao.Entity.AccountEntity;
 import com.example.banksystem.dao.Entity.PersonEntity;
+import com.example.banksystem.dto.*;
 import com.example.banksystem.exception.BankSystemIllegalArgumentException;
 import com.example.banksystem.exception.BankSystemNotFoundException;
 import com.example.banksystem.mapper.AccountMapper;
 import com.example.banksystem.mapper.DepositMapper;
 import com.example.banksystem.mapper.PersonMapper;
 import com.example.banksystem.mapper.WithdrawalMapper;
-import com.example.banksystem.service.api.AccountService;
-import com.example.banksystem.service.api.PersonService;
-import com.example.banksystem.service.api.TransactionsService;
-import com.example.banksystem.service.dto.*;
 import com.example.banksystem.utils.api.DigestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

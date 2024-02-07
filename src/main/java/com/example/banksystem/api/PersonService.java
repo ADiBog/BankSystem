@@ -1,6 +1,6 @@
-package com.example.banksystem.service.api;
+package com.example.banksystem.api;
 
-import com.example.banksystem.service.dto.PersonDto;
+import com.example.banksystem.dto.PersonDto;
 
 /**
  * Работа с пользователями.

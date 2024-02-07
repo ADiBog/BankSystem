@@ -1,8 +1,8 @@
 package com.example.banksystem.mapper;
 
 import com.example.banksystem.controller.request.WithdrawalRequest;
-import com.example.banksystem.service.dto.MoneyTransferDto;
-import com.example.banksystem.service.dto.WithdrawalDto;
+import com.example.banksystem.dto.MoneyTransferDto;
+import com.example.banksystem.dto.WithdrawalDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
