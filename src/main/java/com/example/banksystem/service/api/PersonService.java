@@ -11,7 +11,6 @@ public interface PersonService {
      * Создать нового пользователя.
      *
      * @param personDto модель содержашие данные о новом пользователе.
-     * @return
      */
     PersonDto save(PersonDto personDto);
 
