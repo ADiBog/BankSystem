@@ -2,6 +2,7 @@ package com.example.banksystem;
 
 import com.example.banksystem.dao.AccountRepository;
 import com.example.banksystem.dao.Entity.AccountEntity;
+import com.example.banksystem.exception.BankSystemIllegalArgumentException;
 import com.example.banksystem.exception.BankSystemNotFoundException;
 import com.example.banksystem.service.AccountServiceImpl;
 import com.example.banksystem.service.api.PersonService;
@@ -73,7 +74,8 @@ public class AccountServiceImplTest {
         AccountDto accountDto = new AccountDto();
         accountDto.setPersonDto(personDto);
 
-        String accountNo = accountService.save(accountDto);
+        //when(personService.findByLogin("test")).thenReturn(personDto);
+        accountService.save(accountDto);
     }
 
     @Test
@@ -110,7 +112,7 @@ public class AccountServiceImplTest {
         String balance = accountService.withdrawalMoney(dto);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BankSystemIllegalArgumentException.class)
     public void withdrawMoney_priceForWithdrawalWrong() {
         AccountEntity entity = new AccountEntity();
         entity.setPinCode("1111");
@@ -127,7 +129,7 @@ public class AccountServiceImplTest {
         String balance = accountService.withdrawalMoney(dto);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BankSystemIllegalArgumentException.class)
     public void withdrawMoney_pinCodeWrong() {
         AccountEntity entity = new AccountEntity();
         entity.setPinCode("1111");
@@ -260,7 +262,7 @@ public class AccountServiceImplTest {
         String balanceAfterWithdraw = accountService.transferMoney(MoneyTransferDto);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BankSystemIllegalArgumentException.class)
     public void transferMoney_pinCodeForAccountWithdrawWrong() {
         BigDecimal price = new BigDecimal("5000");
         Long accountNoFrom = 123L;
@@ -300,7 +302,7 @@ public class AccountServiceImplTest {
         String balanceAfterWithdraw = accountService.transferMoney(MoneyTransferDto);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BankSystemIllegalArgumentException.class)
     public void transferMoney_priceForWithdrawalWrong() {
         BigDecimal price = new BigDecimal("5000");
         Long accountNoFrom = 123L;
