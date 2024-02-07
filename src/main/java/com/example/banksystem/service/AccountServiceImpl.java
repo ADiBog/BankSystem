@@ -108,7 +108,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDto findByAccountNumber(Long accountNumber) {
         return accountRepository.findByAccountNumber(accountNumber)
-                .map(entity -> accountMapper.toAccountDto(entity))
+                .map(accountMapper::toAccountDto)
                 .orElseThrow(() ->
                         new BankSystemNotFoundException(String.format("Счет с номером %s не найден", accountNumber)));
     }

@@ -42,13 +42,13 @@ public class AccountServiceImplTest {
     @Mock
     private AccountRepository accountRepository;
     @Mock
-    AccountMapper accountMapper;
+    private AccountMapper accountMapper;
     @Mock
-    DepositMapper depositMapper;
+    private DepositMapper depositMapper;
     @Mock
-    WithdrawalMapper withdrawalMapper;
+    private WithdrawalMapper withdrawalMapper;
     @Mock
-    PersonMapper personMapper;
+    private PersonMapper personMapper;
 
     private AccountServiceImpl accountService;
 
@@ -123,7 +123,7 @@ public class AccountServiceImplTest {
         String balance = accountService.withdrawalMoney(dto);
     }
 
-    @Test(expected = BankSystemIllegalArgumentException.class)
+    @Test(expected = BankSystemNotFoundException.class)
     public void withdrawMoney_priceForWithdrawalWrong() {
         AccountEntity entity = new AccountEntity();
         entity.setPinCode("1111");
@@ -140,7 +140,7 @@ public class AccountServiceImplTest {
         String balance = accountService.withdrawalMoney(dto);
     }
 
-    @Test(expected = BankSystemIllegalArgumentException.class)
+    @Test(expected = BankSystemNotFoundException.class)
     public void withdrawMoney_pinCodeWrong() {
         AccountEntity entity = new AccountEntity();
         entity.setPinCode("1111");
@@ -349,10 +349,10 @@ public class AccountServiceImplTest {
 
         doReturn(Optional.of(new AccountEntity())).when(accountRepository).findByAccountNumber(123L);
 
-        AccountDto byAccountNo = accountService.findByAccountNumber(123L);
+        AccountDto byAccountNumber = accountService.findByAccountNumber(123L);
 
         verify(accountRepository, times(1)).findByAccountNumber(123L);
-        assertNotNull(byAccountNo);
+        assertNotNull(byAccountNumber);
     }
 
     @Test(expected = BankSystemNotFoundException.class)

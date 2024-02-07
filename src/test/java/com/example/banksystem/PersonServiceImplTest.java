@@ -13,10 +13,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.modelmapper.internal.util.Assert;
 
 import java.util.Optional;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,29 +42,43 @@ public class PersonServiceImplTest {
 
     @Test
     public void save() {
-        PersonEntity entity = new PersonEntity();
-        entity.setLogin("test");
-
+        // Arrange
         PersonDto personDto = new PersonDto();
         personDto.setLogin("test");
+
+        PersonEntity personEntity = new PersonEntity();
+        personEntity.setLogin("test");
+        when(personMapper.toPersonEntity(personDto)).thenReturn(personEntity);
+
+        PersonDto savedPersonDto = new PersonDto();
+        savedPersonDto.setLogin("test");
+        when(personMapper.toPersonDto(personEntity)).thenReturn(savedPersonDto);
+
+        // Act
         PersonDto save = personService.save(personDto);
 
-        verify(personRepository, times(1)).save(entity);
-        Assert.notNull(save);
+        // Assert
+        verify(personRepository, times(1)).save(personEntity);
+        assertNotNull(save);
+        assertEquals(savedPersonDto, save);
     }
 
     @Test
     public void findByLogin_ok() {
+        // Arrange
         PersonEntity entity = new PersonEntity();
         entity.setPersonId(1L);
         entity.setLogin("test");
 
-        doReturn(Optional.of(entity)).when(personRepository).findByLogin("test");
+        when(personRepository.findByLogin("test")).thenReturn(Optional.of(entity));
 
+        // Act
         PersonDto savedDto = personService.findByLogin("test");
 
+        // Assert
         verify(personRepository, times(1)).findByLogin("test");
-        Assert.notNull(savedDto);
+        assertNotNull(savedDto);
+        assertEquals("test", savedDto.getLogin());
     }
 
     @Test(expected = BankSystemNotFoundException.class)

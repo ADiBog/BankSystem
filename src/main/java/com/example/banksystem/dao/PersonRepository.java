@@ -20,11 +20,4 @@ public interface PersonRepository extends JpaRepository<PersonEntity, Long> {
      * @return опциональная сущность с информацие о пользователе.
      */
     Optional<PersonEntity> findByLogin(String personLogin);
-
-    /**
-     * Сохранить данные о пользователе.
-     *
-     * @param entity данные о пользователе.
-     */
-    //void save(PersonEntity entity);
 }

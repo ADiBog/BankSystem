@@ -19,9 +19,4 @@ public interface TransactionsRepository extends JpaRepository<TransactionsEntity
      * @return
      */
     List<TransactionsEntity> findByPersonLogin(String loginPerson);
-
-    /**
-     * @param transactionsEntity
-     */
-    //void save(TransactionsEntity transactionsEntity);
 }
