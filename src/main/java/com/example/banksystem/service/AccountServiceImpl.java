@@ -12,7 +12,6 @@ import com.example.banksystem.service.dto.*;
 import com.example.banksystem.utils.ModelMapperUtils;
 import com.example.banksystem.utils.api.DigestService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,13 +30,7 @@ public class AccountServiceImpl implements AccountService {
     private final DigestService digestService;
     private final TransactionsService transactionsService;
     private final AccountRepository accountRepository;
-
-    private PersonService personService;
-
-    @Autowired
-    public void setPersonService(PersonService personService) {
-        this.personService = personService;
-    }
+    private final PersonService personService;
 
     @Override
     public String save(AccountDto dto) {

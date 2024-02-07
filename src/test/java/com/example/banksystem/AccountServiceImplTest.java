@@ -42,7 +42,7 @@ public class AccountServiceImplTest {
 
     @Before
     public void setUp() {
-        accountService = new AccountServiceImpl(digestService, transactionsService, accountRepository);
+        accountService = new AccountServiceImpl(digestService, transactionsService, accountRepository, personService);
     }
 
     @Test
@@ -64,7 +64,6 @@ public class AccountServiceImplTest {
 
     @Test(expected = BankSystemNotFoundException.class)
     public void save_personNotFound() {
-
         doThrow(BankSystemNotFoundException.class).when(personService).findByLogin("test");
 
         PersonDto personDto = new PersonDto();
@@ -74,7 +73,6 @@ public class AccountServiceImplTest {
         AccountDto accountDto = new AccountDto();
         accountDto.setPersonDto(personDto);
 
-        //when(personService.findByLogin("test")).thenReturn(personDto);
         accountService.save(accountDto);
     }
 
@@ -96,7 +94,7 @@ public class AccountServiceImplTest {
 
         verify(accountRepository, times(1)).findByAccountNumber(123L);
         verify(digestService, times(1)).hash(WithdrawalDto.getPinCode());
-        //verify(accountRepository, times(1)).updateBalance(any(AccountEntity.class));
+        verify(accountRepository, times(1)).updateBalance(anyLong(), any(BigDecimal.class));
         verify(transactionsService, times(1)).save(any(TransactionsDto.class));
         assertNotNull(balanceAfterWithdraw);
         assertEquals(balanceAfterWithdraw, new BigDecimal("500").toString());
@@ -161,7 +159,7 @@ public class AccountServiceImplTest {
         String balanceAfterDeposit = accountService.depositMoney(depositAccount);
 
         verify(accountRepository, times(1)).findByAccountNumber(depositAccount.getAccountNumber());
-        //verify(accountRepository, times(1)).updateBalance(any(AccountEntity.class));
+        verify(accountRepository, times(1)).updateBalance(anyLong(), any(BigDecimal.class));
         verify(transactionsService, times(1)).save(any(TransactionsDto.class));
         assertNotNull(balanceAfterDeposit);
         assertEquals(balanceAfterDeposit, new BigDecimal("1500").toString());
@@ -217,7 +215,7 @@ public class AccountServiceImplTest {
         verify(accountRepository, times(1)).findByAccountNumber(WithdrawalDto.getAccountNumber());
         verify(accountRepository, times(1)).findByAccountNumber(DepositDto.getAccountNumber());
         verify(digestService, times(1)).hash(WithdrawalDto.getPinCode());
-        //verify(accountRepository, times(2)).updateBalance(any(AccountEntity.class));
+        verify(accountRepository, times(2)).updateBalance(anyLong(), any(BigDecimal.class));
         verify(transactionsService, times(2)).save(any(TransactionsDto.class));
 
         assertNotNull(balanceAfterWithdraw);
@@ -296,6 +294,7 @@ public class AccountServiceImplTest {
         doReturn(Optional.empty()).when(accountRepository).findByAccountNumber(123L);
 
         MoneyTransferDto MoneyTransferDto = new MoneyTransferDto();
+        MoneyTransferDto.setPrice(BigDecimal.valueOf(1000));
         MoneyTransferDto.setOutgoingAccountNumber(123L);
         MoneyTransferDto.setIncomingAccountNumber(555L);
 
@@ -349,7 +348,7 @@ public class AccountServiceImplTest {
         AccountDto byAccountNo = accountService.findByAccountNumber(123L);
     }
 
-   /* @Test
+    /*@Test
     public void updateBalance() {
         AccountDto dto = new AccountDto();
         dto.setAccountNumber(123L);
