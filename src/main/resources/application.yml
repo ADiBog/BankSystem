@@ -10,8 +10,4 @@ spring:
     username: h2
     password: h2
 
-  liquibase:
-    enabled: false
-    change-log: db/master-changelog.xml
-
 

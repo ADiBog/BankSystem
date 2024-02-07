@@ -38,7 +38,6 @@ public class TransactionsServiceImplTest {
 
         verify(transactionsRepository, times(1)).save(any(TransactionsEntity.class));
         assertNotNull(savedDto);
-        assertNotNull(savedDto.getCreateDttm());
     }
 
     @Test

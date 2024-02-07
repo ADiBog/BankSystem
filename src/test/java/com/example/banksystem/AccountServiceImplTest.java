@@ -81,6 +81,7 @@ public class AccountServiceImplTest {
         AccountEntity selectedAccount = new AccountEntity();
         selectedAccount.setPinCode("1111");
         selectedAccount.setBalance(new BigDecimal("1000"));
+        selectedAccount.setAccountId(1L);
 
         WithdrawalDto WithdrawalDto = new WithdrawalDto();
         WithdrawalDto.setAccountNumber(123L);
@@ -94,7 +95,7 @@ public class AccountServiceImplTest {
 
         verify(accountRepository, times(1)).findByAccountNumber(123L);
         verify(digestService, times(1)).hash(WithdrawalDto.getPinCode());
-        verify(accountRepository, times(1)).updateBalance(anyLong(), any(BigDecimal.class));
+        verify(accountRepository, times(1)).updateBalance(1L, BigDecimal.valueOf(500));
         verify(transactionsService, times(1)).save(any(TransactionsDto.class));
         assertNotNull(balanceAfterWithdraw);
         assertEquals(balanceAfterWithdraw, new BigDecimal("500").toString());
@@ -149,6 +150,7 @@ public class AccountServiceImplTest {
         AccountEntity selectedAccount = new AccountEntity();
         selectedAccount.setPinCode("1111");
         selectedAccount.setBalance(new BigDecimal("1000"));
+        selectedAccount.setAccountId(1L);
 
         DepositDto depositAccount = new DepositDto();
         depositAccount.setAccountNumber(123L);
@@ -159,7 +161,7 @@ public class AccountServiceImplTest {
         String balanceAfterDeposit = accountService.depositMoney(depositAccount);
 
         verify(accountRepository, times(1)).findByAccountNumber(depositAccount.getAccountNumber());
-        verify(accountRepository, times(1)).updateBalance(anyLong(), any(BigDecimal.class));
+        verify(accountRepository, times(1)).updateBalance(1L, BigDecimal.valueOf(1500));
         verify(transactionsService, times(1)).save(any(TransactionsDto.class));
         assertNotNull(balanceAfterDeposit);
         assertEquals(balanceAfterDeposit, new BigDecimal("1500").toString());
@@ -185,6 +187,7 @@ public class AccountServiceImplTest {
         AccountEntity accountForWithdraw = new AccountEntity();
         accountForWithdraw.setPinCode("1111");
         accountForWithdraw.setBalance(new BigDecimal("1000"));
+        accountForWithdraw.setAccountId(1L);
 
         WithdrawalDto WithdrawalDto = new WithdrawalDto();
         WithdrawalDto.setAccountNumber(accountNoFrom);
@@ -215,7 +218,7 @@ public class AccountServiceImplTest {
         verify(accountRepository, times(1)).findByAccountNumber(WithdrawalDto.getAccountNumber());
         verify(accountRepository, times(1)).findByAccountNumber(DepositDto.getAccountNumber());
         verify(digestService, times(1)).hash(WithdrawalDto.getPinCode());
-        verify(accountRepository, times(2)).updateBalance(anyLong(), any(BigDecimal.class));
+        verify(accountRepository, times(1)).updateBalance(1L, BigDecimal.valueOf(500));
         verify(transactionsService, times(2)).save(any(TransactionsDto.class));
 
         assertNotNull(balanceAfterWithdraw);
