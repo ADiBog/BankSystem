@@ -3,9 +3,9 @@ package com.example.banksystem.service;
 import com.example.banksystem.dao.Entity.TransactionsEntity;
 import com.example.banksystem.dao.TransactionsRepository;
 import com.example.banksystem.exception.BankSystemNotFoundException;
+import com.example.banksystem.mapper.TransactionsMapper;
 import com.example.banksystem.service.api.TransactionsService;
 import com.example.banksystem.service.dto.TransactionsDto;
-import com.example.banksystem.utils.ModelMapperUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -22,16 +22,16 @@ import java.util.Objects;
 public class TransactionsServiceImpl implements TransactionsService {
 
     private final TransactionsRepository transactionsRepository;
-   // private final AccountService accountService;
+    private final TransactionsMapper transactionsMapper;
 
     @Override
     public TransactionsDto save(TransactionsDto dto) {
         checkAndSetCreateDttm(dto);
 
-        TransactionsEntity transactionsEntity = ModelMapperUtils.map(dto, TransactionsEntity.class);
-        transactionsRepository.save(ModelMapperUtils.map(dto, TransactionsEntity.class));
+        TransactionsEntity transactionsEntity = transactionsMapper.toTransactionsEntity(dto);
+        transactionsRepository.save(transactionsMapper.toTransactionsEntity(dto));
 
-        return ModelMapperUtils.map(transactionsEntity, TransactionsDto.class);
+        return transactionsMapper.toTransactionsDto(transactionsEntity);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class TransactionsServiceImpl implements TransactionsService {
         List<TransactionsEntity> transactionsList = transactionsRepository.findByPersonLogin(login);
         checkForTransactions(transactionsList, login);
 
-        return ModelMapperUtils.mapAll(transactionsList, TransactionsDto.class);
+        return transactionsMapper.toListDto(transactionsList);
     }
 
     private void checkAndSetCreateDttm(TransactionsDto dto) {

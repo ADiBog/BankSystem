@@ -5,11 +5,14 @@ import com.example.banksystem.dao.Entity.AccountEntity;
 import com.example.banksystem.dao.Entity.PersonEntity;
 import com.example.banksystem.exception.BankSystemIllegalArgumentException;
 import com.example.banksystem.exception.BankSystemNotFoundException;
+import com.example.banksystem.mapper.AccountMapper;
+import com.example.banksystem.mapper.DepositMapper;
+import com.example.banksystem.mapper.PersonMapper;
+import com.example.banksystem.mapper.WithdrawalMapper;
 import com.example.banksystem.service.api.AccountService;
 import com.example.banksystem.service.api.PersonService;
 import com.example.banksystem.service.api.TransactionsService;
 import com.example.banksystem.service.dto.*;
-import com.example.banksystem.utils.ModelMapperUtils;
 import com.example.banksystem.utils.api.DigestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,10 @@ public class AccountServiceImpl implements AccountService {
     private final TransactionsService transactionsService;
     private final AccountRepository accountRepository;
     private final PersonService personService;
+    private final AccountMapper accountMapper;
+    private final DepositMapper depositMapper;
+    private final WithdrawalMapper withdrawalMapper;
+    private final PersonMapper personMapper;
 
     @Override
     public String save(AccountDto dto) {
@@ -101,7 +108,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDto findByAccountNumber(Long accountNumber) {
         return accountRepository.findByAccountNumber(accountNumber)
-                .map(entity -> ModelMapperUtils.map(entity, AccountDto.class))
+                .map(entity -> accountMapper.toAccountDto(entity))
                 .orElseThrow(() ->
                         new BankSystemNotFoundException(String.format("Счет с номером %s не найден", accountNumber)));
     }
@@ -112,7 +119,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private AccountEntity buildAccountEntity(PersonDto personDto, String pinCode) {
-        PersonEntity map = ModelMapperUtils.map(personService.findById(personDto.getPersonId()), PersonEntity.class);
+        PersonDto byId = personService.findById(personDto.getPersonId());
+        PersonEntity map = personMapper.toPersonEntity(byId);
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setPerson(map);
         accountEntity.setAccountNumber(getAccountNumber());
@@ -163,13 +171,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private WithdrawalDto getWithdrawMoneyDto(MoneyTransferDto dto) {
-        WithdrawalDto withdrawalMoneyDto = ModelMapperUtils.map(dto, WithdrawalDto.class);
+        WithdrawalDto withdrawalMoneyDto = withdrawalMapper.toWithdrawalDto(dto);
         withdrawalMoneyDto.setAccountNumber(dto.getOutgoingAccountNumber());
         return withdrawalMoneyDto;
     }
 
     private DepositDto getDepositMoneyDto(MoneyTransferDto dto) {
-        DepositDto depositMoneyDto = ModelMapperUtils.map(dto, DepositDto.class);
+        DepositDto depositMoneyDto = depositMapper.toDepositDto(dto);
         depositMoneyDto.setAccountNumber(dto.getIncomingAccountNumber());
         depositMoneyDto.setReplenishmentAmount(dto.getPrice());
         return depositMoneyDto;
