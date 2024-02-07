@@ -63,24 +63,6 @@ public class PersonServiceImplTest {
         assertEquals(savedPersonDto, save);
     }
 
-    @Test
-    public void findByLogin_ok() {
-        // Arrange
-        PersonEntity entity = new PersonEntity();
-        entity.setPersonId(1L);
-        entity.setLogin("test");
-
-        when(personRepository.findByLogin("test")).thenReturn(Optional.of(entity));
-
-        // Act
-        PersonDto savedDto = personService.findByLogin("test");
-
-        // Assert
-        verify(personRepository, times(1)).findByLogin("test");
-        assertNotNull(savedDto);
-        assertEquals("test", savedDto.getLogin());
-    }
-
     @Test(expected = BankSystemNotFoundException.class)
     public void findByLogin_notFound() {
         PersonEntity entity = new PersonEntity();

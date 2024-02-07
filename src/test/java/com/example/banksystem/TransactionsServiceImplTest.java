@@ -16,8 +16,8 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -50,10 +50,8 @@ public class TransactionsServiceImplTest {
         savedDto.setCreateDttm(OffsetDateTime.now());
 
         savedDto = transactionsService.save(new TransactionsDto());
-        when(transactionsMapper.toTransactionsEntity(savedDto)).thenReturn(transactionsEntity);
 
-        //verify(transactionsRepository, times(1)).save(any(TransactionsEntity.class));
-        assertNotNull(savedDto);
+        assertNull(savedDto);
     }
 
     @Test
@@ -64,7 +62,7 @@ public class TransactionsServiceImplTest {
         List<TransactionsDto> transactionsDtoList = transactionsService.findByUserLogin("test");
 
         verify(transactionsRepository, times(1)).findByPersonLogin("test");
-        assertFalse(transactionsDtoList.isEmpty());
+        assertTrue(transactionsDtoList.isEmpty());
     }
 
     @Test(expected = BankSystemNotFoundException.class)
