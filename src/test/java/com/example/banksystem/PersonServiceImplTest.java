@@ -3,6 +3,8 @@ package com.example.banksystem;
 import com.example.banksystem.dao.Entity.PersonEntity;
 import com.example.banksystem.dao.PersonRepository;
 import com.example.banksystem.exception.BankSystemNotFoundException;
+import com.example.banksystem.mapper.AccountMapper;
+import com.example.banksystem.mapper.PersonMapper;
 import com.example.banksystem.service.PersonServiceImpl;
 import com.example.banksystem.service.api.AccountService;
 import com.example.banksystem.service.dto.PersonDto;
@@ -25,12 +27,16 @@ public class PersonServiceImplTest {
 
     @Mock
     private AccountService accountService;
+    @Mock
+    PersonMapper personMapper;
+    @Mock
+    AccountMapper accountMapper;
 
     private PersonServiceImpl personService;
 
     @Before
     public void setUp() {
-        personService = new PersonServiceImpl(personRepository, accountService);
+        personService = new PersonServiceImpl(personRepository, accountService, personMapper, accountMapper);
     }
 
     @Test

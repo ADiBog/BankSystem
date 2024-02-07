@@ -44,7 +44,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonDto findByLogin(String personLogin) {
         return personRepository.findByLogin(personLogin)
-                .map(entity -> personMapper.toPersonDto(entity))
+                .map(personMapper::toPersonDto)
                 .orElseThrow(() -> new BankSystemNotFoundException(
                         String.format("Пользователь с идентификатором %s не найден!", personLogin)));
     }
@@ -52,7 +52,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonDto findById(Long personId) {
         return personRepository.findById(personId)
-                .map(entity -> personMapper.toPersonDto(entity))
+                .map(personMapper::toPersonDto)
                 .orElseThrow(() -> new BankSystemNotFoundException(
                         String.format("Пользователь с идентификатором %s не найден!", personId)));
     }

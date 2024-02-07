@@ -4,6 +4,10 @@ import com.example.banksystem.dao.AccountRepository;
 import com.example.banksystem.dao.Entity.AccountEntity;
 import com.example.banksystem.exception.BankSystemIllegalArgumentException;
 import com.example.banksystem.exception.BankSystemNotFoundException;
+import com.example.banksystem.mapper.AccountMapper;
+import com.example.banksystem.mapper.DepositMapper;
+import com.example.banksystem.mapper.PersonMapper;
+import com.example.banksystem.mapper.WithdrawalMapper;
 import com.example.banksystem.service.AccountServiceImpl;
 import com.example.banksystem.service.api.PersonService;
 import com.example.banksystem.service.api.TransactionsService;
@@ -37,12 +41,20 @@ public class AccountServiceImplTest {
 
     @Mock
     private AccountRepository accountRepository;
+    @Mock
+    AccountMapper accountMapper;
+    @Mock
+    DepositMapper depositMapper;
+    @Mock
+    WithdrawalMapper withdrawalMapper;
+    @Mock
+    PersonMapper personMapper;
 
     private AccountServiceImpl accountService;
 
     @Before
     public void setUp() {
-        accountService = new AccountServiceImpl(digestService, transactionsService, accountRepository, personService);
+        accountService = new AccountServiceImpl(digestService, transactionsService, accountRepository, personService, accountMapper, depositMapper, withdrawalMapper, personMapper);
     }
 
     @Test
