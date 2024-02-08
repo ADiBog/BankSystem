@@ -82,8 +82,8 @@ public class AccountServiceImpl implements AccountService {
 
         BigDecimal balanceOnAccount = selectedAccount.getBalance();
         BigDecimal replenishmentAmount = dto.getReplenishmentAmount();
-
         balanceOnAccount = balanceOnAccount.add(replenishmentAmount);
+
         AccountDto accountAfterDeposit = getAccountDto(selectedAccount.getAccountId(), accountNumber, balanceOnAccount);
         updateBalance(accountAfterDeposit.getAccountId(), accountAfterDeposit.getBalance());
 
@@ -121,6 +121,7 @@ public class AccountServiceImpl implements AccountService {
     private AccountEntity buildAccountEntity(PersonDto personDto, String pinCode) {
         PersonDto byId = personService.findById(personDto.getPersonId());
         PersonEntity map = personMapper.toPersonEntity(byId);
+
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setPerson(map);
         accountEntity.setAccountNumber(getAccountNumber());
